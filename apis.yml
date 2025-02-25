@@ -15,6 +15,18 @@ apis:
     description: >-
       Honda's customer satisfaction efforts include roadside assistance,
       maintenance programs, and vehicle-service contracts.
+  - aid: honda:new
+    name: new
+    description: RatingServices Web API
+    humanURL: https://rating.services.honda.com/Help
+    tags: []
+    properties:
+      - type: Documentation
+        url: https://rating.services.honda.com/Help
+      - name: Honda Rating Services API
+        description: RatingServices Web API
+        url: https://rating.services.honda.com/Help
+        type: Documentation
 name: Honda
 tags:
   - Vehicles
@@ -41,3 +53,4 @@ maintainers:
   - FN: Kin Lane
     email: info@apievangelist.com
 specificationVersion: '0.19'
+common: []
