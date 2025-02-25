@@ -33,7 +33,7 @@ Honda's customer satisfaction efforts include roadside assistance, maintenance p
 #### Properties
 
 - [Documentation](https://csat.services.honda.com/swagger/ui/index.html)
-### new
+### Honda Rating Service API
 RatingServices Web API
 
 **Human URL:** [https://rating.services.honda.com/Help](https://rating.services.honda.com/Help)
@@ -45,7 +45,6 @@ RatingServices Web API
 
 #### Properties
 
-- [Documentation](https://rating.services.honda.com/Help)
 - [Documentation](https://rating.services.honda.com/Help)
 
 ## Common Properties
