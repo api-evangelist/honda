@@ -2,15 +2,19 @@ aid: honda
 url: >-
   https://raw.githubusercontent.com/api-evangelist/honda/refs/heads/main/apis.yml
 apis:
-  - aid: honda:honda
-    name: Honda
+  - aid: honda:honda-customer-satisfaction-api
+    name: Honda Customer Satisfaction API
     tags:
-      - API
-    humanURL: ' https://csat.services.honda.com/swagger/ui/index.html'
+      - Cars
+      - Automobiles
+      - Roadside Assistance
+    humanURL: https://csat.services.honda.com/
     properties:
-      - url: ' https://csat.services.honda.com/swagger/ui/index.html'
+      - url: https://csat.services.honda.com/swagger/ui/index.html
         type: Documentation
-    description: 'csat.services.honda.com '
+    description: >-
+      Honda's customer satisfaction efforts include roadside assistance,
+      maintenance programs, and vehicle-service contracts.
 name: Honda
 tags:
   - Vehicles
@@ -19,7 +23,7 @@ tags:
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
-created: '2025-02-25'
+created: '2025-02-25T00:00:00.000Z'
 modified: '2025-02-25'
 position: Consumer
 description: >-
