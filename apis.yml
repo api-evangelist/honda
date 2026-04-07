@@ -11,9 +11,9 @@ type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
   - Automobiles
-  - Vehicles
-  - Cars
   - Automotive
+  - Cars
+  - Vehicles
 created: '2025-02-25'
 modified: '2026-03-16'
 specificationVersion: '0.19'
@@ -26,8 +26,8 @@ apis:
       and dealers.
     humanURL: https://csat.services.honda.com/
     tags:
-      - Cars
       - Automobiles
+      - Cars
       - Roadside Assistance
     properties:
       - type: Documentation
@@ -37,8 +37,8 @@ apis:
     description: Honda Rating Services Web API for vehicle rating and pricing data.
     humanURL: https://rating.services.honda.com/Help
     tags:
-      - Rating
       - Pricing
+      - Rating
     properties:
       - type: Documentation
         url: https://rating.services.honda.com/Help
