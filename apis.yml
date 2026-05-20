@@ -43,6 +43,8 @@ apis:
       - type: Documentation
         url: https://rating.services.honda.com/Help
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/honda
   - type: Website
     url: https://www.honda.com/
   - type: Developer Portal
