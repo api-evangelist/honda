@@ -1,0 +1,887 @@
+# Honda Motor GraphQL Schema
+# Conceptual schema for Honda connected vehicle and API services
+# Covers HondaLink, AcuraLink, Honda Sensing, dealer, maintenance, and diagnostics
+
+# ─── Scalars ───────────────────────────────────────────────────────────────────
+
+scalar DateTime
+scalar JSON
+
+# ─── Enums ─────────────────────────────────────────────────────────────────────
+
+enum DrivetrainType {
+  FWD
+  RWD
+  AWD
+  FOURWD
+}
+
+enum TransmissionType {
+  AUTOMATIC
+  CVT
+  MANUAL
+  DUAL_CLUTCH
+  ELECTRIC
+}
+
+enum FuelType {
+  GASOLINE
+  HYBRID
+  PHEV
+  ELECTRIC
+  HYDROGEN
+}
+
+enum IgnitionState {
+  ON
+  OFF
+  ACCESSORY
+  START
+}
+
+enum LockState {
+  LOCKED
+  UNLOCKED
+  UNKNOWN
+}
+
+enum WindowState {
+  OPEN
+  CLOSED
+  PARTIALLY_OPEN
+  UNKNOWN
+}
+
+enum TirePressureUnit {
+  PSI
+  BAR
+  KPA
+}
+
+enum TemperatureUnit {
+  CELSIUS
+  FAHRENHEIT
+}
+
+enum DistanceUnit {
+  MILES
+  KILOMETERS
+}
+
+enum AlertSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+enum CommandStatus {
+  PENDING
+  SENT
+  CONFIRMED
+  FAILED
+  TIMEOUT
+}
+
+enum ServiceType {
+  OIL_CHANGE
+  TIRE_ROTATION
+  BRAKE_INSPECTION
+  MULTI_POINT_INSPECTION
+  RECALL_REPAIR
+  WARRANTY_REPAIR
+  GENERAL_REPAIR
+}
+
+enum WebhookEvent {
+  VEHICLE_STATUS_CHANGED
+  DOOR_LOCKED
+  DOOR_UNLOCKED
+  IGNITION_ON
+  IGNITION_OFF
+  ALERT_TRIGGERED
+  MAINTENANCE_DUE
+  RECALL_ISSUED
+  REMOTE_COMMAND_COMPLETE
+}
+
+# ─── Vehicle Identity Types ─────────────────────────────────────────────────────
+
+type VIN {
+  number: String!
+  decoded: VINDecoded
+}
+
+type VINDecoded {
+  make: String
+  model: String
+  year: Int
+  plant: String
+  serialNumber: String
+  checkDigit: String
+}
+
+type Model {
+  modelId: String!
+  name: String!
+  brand: String!
+  category: String
+  years: [Year!]
+  trims: [Trim!]
+}
+
+type Trim {
+  trimId: String!
+  name: String!
+  msrp: Float
+  engine: Engine
+  drivetrain: Drivetrain
+  transmission: Transmission
+  standardFeatures: [String!]
+  optionalFeatures: [String!]
+}
+
+type Year {
+  year: Int!
+  models: [Model!]
+}
+
+type Engine {
+  engineId: String!
+  displacement: Float
+  cylinders: Int
+  horsepower: Int
+  torque: Int
+  fuelType: FuelType!
+  description: String
+}
+
+type Drivetrain {
+  drivetrainId: String!
+  type: DrivetrainType!
+  description: String
+}
+
+type Transmission {
+  transmissionId: String!
+  type: TransmissionType!
+  speeds: Int
+  description: String
+}
+
+type Color {
+  colorCode: String!
+  name: String!
+  hex: String
+  type: String
+  interiorExterior: String
+}
+
+# ─── Base Vehicle Types ─────────────────────────────────────────────────────────
+
+interface Vehicle {
+  vin: VIN!
+  model: Model!
+  year: Int!
+  trim: Trim
+  color: Color
+  mileage: Float
+  registeredOwner: String
+  connectedServices: [String!]
+}
+
+type HondaVehicle implements Vehicle {
+  vin: VIN!
+  model: Model!
+  year: Int!
+  trim: Trim
+  color: Color
+  mileage: Float
+  registeredOwner: String
+  connectedServices: [String!]
+  hondalink: HondaLink
+  hondaSensing: HondaSensing
+  status: VehicleStatus
+  maintenanceReminders: [MaintenanceReminder!]
+  diagnostics: [DiagnosticCode!]
+  recalls: [Recall!]
+}
+
+type AcuraVehicle implements Vehicle {
+  vin: VIN!
+  model: Model!
+  year: Int!
+  trim: Trim
+  color: Color
+  mileage: Float
+  registeredOwner: String
+  connectedServices: [String!]
+  acuralink: AcuraLink
+  hondaSensing: HondaSensing
+  status: VehicleStatus
+  maintenanceReminders: [MaintenanceReminder!]
+  diagnostics: [DiagnosticCode!]
+  recalls: [Recall!]
+}
+
+# ─── Vehicle Status and Telemetry ──────────────────────────────────────────────
+
+type VehicleStatus {
+  vin: VIN!
+  timestamp: DateTime!
+  ignition: IgnitionStatus
+  doorLock: DoorLockStatus
+  window: WindowStatus
+  hood: HoodStatus
+  trunk: TrunkStatus
+  fuelLevel: FuelLevel
+  odometer: OdoReading
+  climate: ClimateStatus
+  tirePressure: TirePressure
+  location: Location
+}
+
+type IgnitionStatus {
+  state: IgnitionState!
+  lastChanged: DateTime
+}
+
+type DoorLockStatus {
+  driverFront: LockState!
+  driverRear: LockState!
+  passengerFront: LockState!
+  passengerRear: LockState!
+  allLocked: Boolean!
+  lastChanged: DateTime
+}
+
+type WindowStatus {
+  driverFront: WindowState!
+  driverRear: WindowState!
+  passengerFront: WindowState!
+  passengerRear: WindowState!
+  lastChanged: DateTime
+}
+
+type HoodStatus {
+  isOpen: Boolean!
+  lastChanged: DateTime
+}
+
+type TrunkStatus {
+  isOpen: Boolean!
+  lastChanged: DateTime
+}
+
+type FuelLevel {
+  percentage: Float!
+  distanceToEmpty: Float
+  unit: DistanceUnit!
+  lastUpdated: DateTime
+}
+
+type OdoReading {
+  reading: Float!
+  unit: DistanceUnit!
+  lastUpdated: DateTime
+}
+
+type ClimateStatus {
+  interiorTemp: Float
+  exteriorTemp: Float
+  unit: TemperatureUnit!
+  isRunning: Boolean!
+  targetTemp: Float
+  defrost: Boolean
+  heatedSeats: [HeatedSeat!]
+}
+
+type HeatedSeat {
+  position: String!
+  level: Int
+  isOn: Boolean!
+}
+
+# ─── Remote Control ─────────────────────────────────────────────────────────────
+
+type RemoteStart {
+  commandId: String!
+  vin: VIN!
+  status: CommandStatus!
+  requestedAt: DateTime!
+  confirmedAt: DateTime
+  duration: Int
+  climateSettings: ClimateSettings
+}
+
+type ClimateSettings {
+  targetTemp: Float
+  unit: TemperatureUnit!
+  defrost: Boolean
+  heatedSeats: Boolean
+}
+
+# ─── Connected Services ─────────────────────────────────────────────────────────
+
+type HondaLink {
+  accountId: String!
+  subscriptionTier: String
+  subscriptionExpiry: DateTime
+  features: [String!]
+  vehicles: [HondaVehicle!]
+}
+
+type AcuraLink {
+  accountId: String!
+  subscriptionTier: String
+  subscriptionExpiry: DateTime
+  features: [String!]
+  vehicles: [AcuraVehicle!]
+}
+
+# ─── Honda Sensing and Driver Assistance ───────────────────────────────────────
+
+type HondaSensing {
+  isAvailable: Boolean!
+  collisionMitigationBraking: CollisionMitigationBraking
+  laneDepartureWarning: LaneDepartureWarning
+  roadDepartureWarning: RoadDepartureWarning
+  adaptiveCruiseControl: AdaptiveCruiseControl
+  blindSpotInfo: BlindSpotInfo
+}
+
+type CollisionMitigationBraking {
+  isEnabled: Boolean!
+  isActive: Boolean
+  sensitivity: String
+  lastEvent: DateTime
+}
+
+type LaneDepartureWarning {
+  isEnabled: Boolean!
+  isActive: Boolean
+  side: String
+  lastEvent: DateTime
+}
+
+type RoadDepartureWarning {
+  isEnabled: Boolean!
+  isActive: Boolean
+  lastEvent: DateTime
+}
+
+type AdaptiveCruiseControl {
+  isEnabled: Boolean!
+  isActive: Boolean
+  setSpeed: Float
+  followDistance: String
+  unit: DistanceUnit
+}
+
+type BlindSpotInfo {
+  isEnabled: Boolean!
+  leftDetection: Boolean
+  rightDetection: Boolean
+  lastUpdated: DateTime
+}
+
+# ─── Navigation and Location ────────────────────────────────────────────────────
+
+type GPS {
+  latitude: Float!
+  longitude: Float!
+  altitude: Float
+  accuracy: Float
+  heading: Float
+  speed: Float
+  timestamp: DateTime!
+}
+
+type Location {
+  gps: GPS!
+  address: String
+  city: String
+  state: String
+  country: String
+  postalCode: String
+}
+
+type NavigationRoute {
+  routeId: String!
+  origin: Location!
+  destination: Location!
+  waypoints: [Location!]
+  distance: Float!
+  estimatedDuration: Int
+  unit: DistanceUnit!
+  steps: [RouteStep!]
+  trafficCondition: String
+}
+
+type RouteStep {
+  instruction: String!
+  distance: Float!
+  duration: Int
+  location: Location
+}
+
+# ─── Trip and Drive History ─────────────────────────────────────────────────────
+
+type Trip {
+  tripId: String!
+  vin: VIN!
+  startTime: DateTime!
+  endTime: DateTime
+  distance: Float
+  fuelUsed: Float
+  averageSpeed: Float
+  maxSpeed: Float
+  startLocation: Location
+  endLocation: Location
+  route: NavigationRoute
+  fuelEfficiency: FuelEfficiency
+  unit: DistanceUnit!
+}
+
+type TripHistory {
+  vin: VIN!
+  trips: [Trip!]!
+  totalDistance: Float
+  totalFuelUsed: Float
+  averageFuelEfficiency: Float
+  startDate: String
+  endDate: String
+}
+
+type DriveHistory {
+  vin: VIN!
+  totalTrips: Int!
+  totalDistance: Float!
+  totalDrivingTime: Int
+  averageTripDistance: Float
+  hardBrakeEvents: Int
+  rapidAccelerationEvents: Int
+  period: String
+}
+
+type FuelEfficiency {
+  mpg: Float
+  lper100km: Float
+  combined: Float
+  city: Float
+  highway: Float
+  unit: String
+}
+
+# ─── Maintenance and Diagnostics ───────────────────────────────────────────────
+
+type MaintenanceReminder {
+  reminderId: String!
+  vin: VIN!
+  type: ServiceType!
+  description: String!
+  dueMileage: Float
+  dueDate: DateTime
+  currentMileage: Float
+  percentRemaining: Float
+  isOverdue: Boolean!
+}
+
+type OilLife {
+  percentage: Float!
+  lastChanged: DateTime
+  nextChangeDue: Float
+  unit: DistanceUnit!
+  estimatedDate: DateTime
+}
+
+type TirePressure {
+  frontLeft: Float!
+  frontRight: Float!
+  rearLeft: Float!
+  rearRight: Float!
+  unit: TirePressureUnit!
+  spare: Float
+  lastUpdated: DateTime
+  warningActive: Boolean!
+}
+
+type DiagnosticCode {
+  code: String!
+  description: String!
+  severity: AlertSeverity!
+  system: String
+  detectedAt: DateTime
+  isActive: Boolean!
+  repairInfo: String
+}
+
+type Recall {
+  recallId: String!
+  nhtsa: String
+  description: String!
+  component: String!
+  consequence: String
+  remedy: String
+  isCompleted: Boolean!
+  completedDate: DateTime
+  affectsVIN: Boolean!
+}
+
+type Alert {
+  alertId: String!
+  vin: VIN!
+  type: String!
+  severity: AlertSeverity!
+  message: String!
+  createdAt: DateTime!
+  acknowledgedAt: DateTime
+  isActive: Boolean!
+}
+
+type Notification {
+  notificationId: String!
+  userId: String!
+  title: String!
+  body: String!
+  type: String!
+  relatedVIN: String
+  createdAt: DateTime!
+  readAt: DateTime
+  isRead: Boolean!
+}
+
+# ─── Dealer and Service ─────────────────────────────────────────────────────────
+
+type Dealer {
+  dealerId: String!
+  name: String!
+  brand: String!
+  address: String!
+  city: String!
+  state: String!
+  country: String!
+  postalCode: String!
+  phone: String
+  website: String
+  latitude: Float
+  longitude: Float
+  distance: Float
+  services: [String!]
+  hours: [DealerHours!]
+  rating: Float
+}
+
+type DealerHours {
+  day: String!
+  open: String
+  close: String
+  isClosed: Boolean!
+}
+
+type DealerLocator {
+  dealers: [Dealer!]!
+  total: Int!
+  searchLocation: Location
+  radiusUsed: Float
+}
+
+type DealerInventory {
+  dealer: Dealer!
+  vehicles: [InventoryVehicle!]!
+  total: Int!
+  lastUpdated: DateTime
+}
+
+type InventoryVehicle {
+  stockNumber: String!
+  vin: VIN!
+  model: Model!
+  year: Int!
+  trim: Trim!
+  color: Color
+  msrp: Float
+  dealerPrice: Float
+  mileage: Float
+  isNew: Boolean!
+  isCertified: Boolean!
+  images: [String!]
+}
+
+type ServiceHistory {
+  vin: VIN!
+  records: [ServiceRecord!]!
+  totalRecords: Int!
+}
+
+type ServiceRecord {
+  recordId: String!
+  dealer: Dealer
+  serviceDate: DateTime!
+  mileageAtService: Float
+  serviceTypes: [ServiceType!]!
+  description: String
+  technicianNotes: String
+  totalCost: Float
+  parts: [ServicePart!]
+}
+
+type ServicePart {
+  partNumber: String!
+  description: String!
+  quantity: Int!
+  unitCost: Float
+}
+
+type PartsOrder {
+  orderId: String!
+  orderDate: DateTime!
+  status: String!
+  dealer: Dealer
+  parts: [OrderedPart!]!
+  totalCost: Float
+  estimatedDelivery: DateTime
+  trackingNumber: String
+}
+
+type OrderedPart {
+  partNumber: String!
+  description: String!
+  quantity: Int!
+  unitPrice: Float!
+  availability: String
+}
+
+type PartsLookup {
+  vin: VIN
+  model: Model
+  year: Int
+  parts: [Part!]!
+  total: Int!
+}
+
+type Part {
+  partNumber: String!
+  description: String!
+  category: String
+  price: Float
+  supersededBy: String
+  diagram: String
+  compatibility: [String!]
+}
+
+type ManualPDF {
+  manualId: String!
+  title: String!
+  year: Int!
+  model: String!
+  language: String!
+  url: String!
+  fileSize: Int
+  pageCount: Int
+  lastUpdated: DateTime
+}
+
+# ─── Authentication ─────────────────────────────────────────────────────────────
+
+type APIKey {
+  keyId: String!
+  name: String!
+  prefix: String!
+  scopes: [String!]!
+  createdAt: DateTime!
+  expiresAt: DateTime
+  isActive: Boolean!
+  lastUsed: DateTime
+}
+
+type OAuthToken {
+  accessToken: String!
+  tokenType: String!
+  expiresIn: Int!
+  refreshToken: String
+  scope: String
+  issuedAt: DateTime!
+}
+
+type Webhook {
+  webhookId: String!
+  url: String!
+  events: [WebhookEvent!]!
+  isActive: Boolean!
+  secret: String
+  createdAt: DateTime!
+  lastDelivery: DateTime
+  failureCount: Int!
+}
+
+# ─── Input Types ───────────────────────────────────────────────────────────────
+
+input LocationInput {
+  latitude: Float!
+  longitude: Float!
+}
+
+input RemoteStartInput {
+  duration: Int
+  targetTemp: Float
+  unit: TemperatureUnit
+  defrost: Boolean
+  heatedSeats: Boolean
+}
+
+input LockCommandInput {
+  lock: Boolean!
+}
+
+input CreateWebhookInput {
+  url: String!
+  events: [WebhookEvent!]!
+  secret: String
+}
+
+input PartsSearchInput {
+  vin: String
+  modelId: String
+  year: Int
+  keyword: String
+  category: String
+}
+
+input ServiceAppointmentInput {
+  dealerId: String!
+  vin: String!
+  serviceTypes: [ServiceType!]!
+  preferredDate: DateTime!
+  notes: String
+}
+
+# ─── Queries ────────────────────────────────────────────────────────────────────
+
+type Query {
+  # Vehicle identity
+  vehicle(vin: String!): Vehicle
+  hondaVehicle(vin: String!): HondaVehicle
+  acuraVehicle(vin: String!): AcuraVehicle
+  decodeVIN(vin: String!): VINDecoded
+  models(brand: String, year: Int): [Model!]!
+  model(modelId: String!): Model
+  trims(modelId: String!, year: Int): [Trim!]!
+  years(brand: String): [Year!]!
+  colors(modelId: String!, year: Int): [Color!]!
+
+  # Vehicle status
+  vehicleStatus(vin: String!): VehicleStatus
+  fuelLevel(vin: String!): FuelLevel
+  odometer(vin: String!): OdoReading
+  tirePressure(vin: String!): TirePressure
+  oilLife(vin: String!): OilLife
+  climateStatus(vin: String!): ClimateStatus
+
+  # Safety systems
+  hondaSensing(vin: String!): HondaSensing
+
+  # Navigation and location
+  vehicleLocation(vin: String!): Location
+  navigationRoute(origin: LocationInput!, destination: LocationInput!): NavigationRoute
+
+  # Trip history
+  tripHistory(vin: String!, startDate: String!, endDate: String!): TripHistory
+  trip(tripId: String!): Trip
+  driveHistory(vin: String!, period: String): DriveHistory
+  fuelEfficiency(vin: String!): FuelEfficiency
+
+  # Maintenance and diagnostics
+  maintenanceReminders(vin: String!): [MaintenanceReminder!]!
+  diagnosticCodes(vin: String!, activeOnly: Boolean): [DiagnosticCode!]!
+  recalls(vin: String!): [Recall!]!
+  alerts(vin: String!, activeOnly: Boolean): [Alert!]!
+  notifications(userId: String!, unreadOnly: Boolean): [Notification!]!
+
+  # Dealer and service
+  dealerLocator(location: LocationInput!, radius: Float, brand: String): DealerLocator
+  dealer(dealerId: String!): Dealer
+  dealerInventory(dealerId: String!, isNew: Boolean): DealerInventory
+  serviceHistory(vin: String!): ServiceHistory
+  partsLookup(input: PartsSearchInput!): PartsLookup
+  part(partNumber: String!): Part
+  manuals(modelId: String, year: Int, language: String): [ManualPDF!]!
+
+  # Connected services
+  hondalink(accountId: String!): HondaLink
+  acuralink(accountId: String!): AcuraLink
+
+  # Auth
+  webhooks(userId: String!): [Webhook!]!
+  apiKeys(userId: String!): [APIKey!]!
+}
+
+# ─── Mutations ──────────────────────────────────────────────────────────────────
+
+type Mutation {
+  # Remote commands
+  remoteStart(vin: String!, input: RemoteStartInput!): RemoteStart!
+  remoteStop(vin: String!): CommandResult!
+  lockDoors(vin: String!, input: LockCommandInput!): CommandResult!
+  setClimate(vin: String!, settings: ClimateSettings!): CommandResult!
+  honkHorn(vin: String!): CommandResult!
+  flashLights(vin: String!): CommandResult!
+
+  # Alerts and notifications
+  acknowledgeAlert(alertId: String!): Alert!
+  markNotificationRead(notificationId: String!): Notification!
+
+  # Service scheduling
+  scheduleService(input: ServiceAppointmentInput!): ServiceAppointment!
+  cancelService(appointmentId: String!): CommandResult!
+
+  # Parts
+  orderPart(partNumber: String!, quantity: Int!, dealerId: String): PartsOrder!
+
+  # Webhooks
+  createWebhook(input: CreateWebhookInput!): Webhook!
+  deleteWebhook(webhookId: String!): CommandResult!
+  testWebhook(webhookId: String!): WebhookDelivery!
+
+  # Auth
+  createAPIKey(name: String!, scopes: [String!]!): APIKey!
+  revokeAPIKey(keyId: String!): CommandResult!
+  authenticate(clientId: String!, clientSecret: String!, scope: String): OAuthToken!
+  refreshToken(refreshToken: String!): OAuthToken!
+}
+
+# ─── Supporting Return Types ────────────────────────────────────────────────────
+
+type CommandResult {
+  success: Boolean!
+  commandId: String
+  message: String
+  timestamp: DateTime!
+}
+
+type ServiceAppointment {
+  appointmentId: String!
+  dealer: Dealer!
+  vin: VIN!
+  scheduledDate: DateTime!
+  serviceTypes: [ServiceType!]!
+  confirmationNumber: String
+  notes: String
+  status: String!
+}
+
+type WebhookDelivery {
+  webhookId: String!
+  deliveredAt: DateTime!
+  statusCode: Int!
+  success: Boolean!
+  responseBody: String
+}
+
+# ─── Subscriptions ──────────────────────────────────────────────────────────────
+
+type Subscription {
+  vehicleStatusChanged(vin: String!): VehicleStatus!
+  alertTriggered(vin: String!): Alert!
+  remoteCommandUpdate(commandId: String!): RemoteStart!
+  notificationReceived(userId: String!): Notification!
+}
