@@ -5,7 +5,7 @@ description: Honda Motor Co., Ltd. is a Japanese multinational manufacturer know
   satisfaction programs, roadside assistance, vehicle services, and dealer integration.
 url: https://raw.githubusercontent.com/api-evangelist/honda/refs/heads/main/apis.yml
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Automobiles
 - Automotive
