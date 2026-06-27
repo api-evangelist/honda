@@ -44,7 +44,7 @@ common:
   url: https://www.linkedin.com/company/honda
 - type: Website
   url: https://www.honda.com/
-- type: Developer Portal
+- type: DeveloperPortal
   url: https://developer.honda.com/
 maintainers:
 - FN: Kin Lane
