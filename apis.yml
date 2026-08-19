@@ -25,7 +25,7 @@ tags:
 - Vehicles
 created: '2025-02-25'
 modified: '2026-04-28'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: honda:honda-customer-satisfaction-api
   name: Honda Customer Satisfaction API
