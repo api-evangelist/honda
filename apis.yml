@@ -58,6 +58,9 @@ apis:
   humanURL: https://rating.services.honda.com/Help
   tags:
   - Pricing
+  - Ratings
+  tags_raw:
+  - Pricing
   - Rating
   properties:
   - type: Documentation
