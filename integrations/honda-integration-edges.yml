@@ -1,0 +1,14 @@
+generated: '2026-10-13'
+edges:
+- partner_name: smartcar
+  partner: smartcar
+  partner_match: aggregator
+  channel: partner-built
+  direction: partner-built
+  type: contract
+  relationship: system-coverage
+  evidence: https://compatibility.api.smartcar.com/v3/compatible-vehicles
+  detected_by: sweep-automotive.py
+  detected: '2026-10-13'
+method: searched
+checked: []
