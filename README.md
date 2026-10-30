@@ -1,4 +1,4 @@
-# Honda (honda)
+# Honda
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,62 +64,108 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Honda is a multinational company that specializes in manufacturing automobiles, motorcycles, and power equipment. Founded in 1946 in Japan, Honda has become one of the world's largest and most well-known automakers, renowned for its innovative technology and reliable vehicles. In addition to producing cars and motorcycles, Honda also manufactures engines, generators, and other power equipment for both commercial and residential use. The company is committed to sustainability and has a strong focus on developing eco-friendly products and reducing its environmental impact. Honda is dedicated to providing high-quality, efficient, and stylish vehicles and equipment to meet the needs of customers worldwide.
+Honda Motor Co., Ltd. is a Japanese multinational manufacturer known for automobiles, motorcycles, and power equipment. Honda provides APIs for customer satisfaction programs, roadside assistance, vehicle services, and dealer integration.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/honda/refs/heads/main/apis.yml)
+**Areas:** Automobiles · Automotive · Cars · Vehicles
 
-## Scope
+## Honda on APIs.io
 
-- **Type:** Index 
-- **Position:** Consumer 
-- **Access:** 3rd-Party 
+Everything profiled for Honda is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/honda/](https://apis.io/providers/honda/)** — or go straight to one of the APIs or properties below.
 
-## Tags:
+### APIs (2)
 
- - Vehicles, Automobiles, Cars
+- [Honda Customer Satisfaction API](https://apis.io/apis/honda/honda-customer-satisfaction-api/) — Honda's customer satisfaction API includes roadside assistance, maintenance programs, and vehicle-service contracts for customers and dealers.
+- [Honda Rating Service API](https://apis.io/apis/honda/honda-rating-service-api/) — Honda Rating Services Web API for vehicle rating and pricing data.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2025-02-25 
-- **Modified:** 2026-04-28 
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### GraphQL (1)
 
-### Honda Customer Satisfaction API
-Honda's customer satisfaction efforts include roadside assistance, maintenance programs, and vehicle-service contracts.
+GraphQL schemas.
 
-**Human URL:** [https://csat.services.honda.com/](https://csat.services.honda.com/)
+- [Moved to /providers/honda/](https://apis.io/graphqls/honda/honda-graphql/)
 
+#### Security (1)
 
-#### Tags:
+Authentication, trust centre, and vulnerability disclosure.
 
- - Cars, Automobiles, Roadside Assistance
+- [Honda Domain Security](https://apis.io/security/honda/honda-domain-security/)
 
-#### Properties
+#### Plans and pricing (1)
 
-- [Documentation](https://csat.services.honda.com/swagger/ui/index.html)
-### Honda Rating Service API
-RatingServices Web API
+Published plans, tiers and prices.
 
-**Human URL:** [https://rating.services.honda.com/Help](https://rating.services.honda.com/Help)
+- [Honda Plans Pricing](https://apis.io/plans/honda/honda-plans-pricing/)
 
+#### Rate limits (1)
 
-#### Tags:
+Published request limits.
 
- - No Tags
+- [Honda Rate Limits](https://apis.io/rate-limits/honda/honda-rate-limits/)
 
-#### Properties
+#### FinOps (1)
 
-- [Documentation](https://rating.services.honda.com/Help)
+What the API costs to run, by operation.
 
-## Common Properties
+- [Honda Finops](https://apis.io/finops/honda/honda-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.honda.com/)
-- [Developer Portal](https://developer.honda.com/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
+**Kin Score 8.9** — minimal · rubric 0.24.0 · scored 2026-10-17
 
-**Email:** kin@apievangelist.com
+| Facet | Score |
+|---|---|
+| Discoverability | 48.2 |
+| Contract quality | 0.0 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 14.3 |
+| Access clarity | 7.9 |
 
+**Agent readiness 0.6** — human-only
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | — |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 5.9** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/honda/](https://apis.io/providers/honda/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Honda: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/honda/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
